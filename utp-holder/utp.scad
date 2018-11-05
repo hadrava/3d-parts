@@ -4,9 +4,9 @@ $fn=100;
 
 cable_count = 1;
 width = 10;
-height = 2;
+height = 1.5;
 base_height = 2.5;
-spacing = 1.5;
+spacing = 1;
 epsilon = 0.1;
 gap_angle = 52;
 
