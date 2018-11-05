@@ -3,12 +3,12 @@
 $fn=100;
 
 cable_count = 1;
-width = 7;
+width = 10;
 height = 2;
 base_height = 2.5;
 spacing = 1.5;
 epsilon = 0.1;
-gap_angle = 38;
+gap_angle = 52;
 
 holder_count = 4;
 
@@ -64,7 +64,7 @@ module base_with_hole(length) {
 	difference() {
 		union() {
 			translate([-epsilon, 0, 0])
-				cube([length + epsilon, width, base_height]);
+				cube([length + epsilon + hole_r_outer, width, base_height]);
 			translate([length, width/2, 0])
 				cylinder(h = base_height, r = hole_r_outer);
 		}
@@ -74,6 +74,9 @@ module base_with_hole(length) {
 }
 
 
+module everything() {
+    union() {
+
 shift = diameter + 2*height + spacing;
 half_shift = diameter/2 + height + spacing;
 for (i = [0:holder_count - 1]) {
@@ -82,3 +85,8 @@ for (i = [0:holder_count - 1]) {
 }
 
 base_with_hole(hole_distance);
+}
+}
+rotate([90,0,90])
+everything();
+
