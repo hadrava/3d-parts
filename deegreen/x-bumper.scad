@@ -38,6 +38,6 @@ difference() {
 			);
 	}
 
-	translate([4.7, 6.3, -1])
+	translate([4.35, 5.95, -1])
 		cylinder(h = 3, r=1.7, $fn=64);
 }
