@@ -4,7 +4,7 @@ svg = 0;
 
 board_x = 120;
 board_y = 120;
-board_z = 2;
+board_z = 2.5;
 
 hole_x_spacing = 2;
 
@@ -46,6 +46,7 @@ module board() {
 
 
 if (svg == 1) {
+	scale(96/25.4) {
 	projection()
 		board();
 	hole_text(3, 1, 13, 2, 4, 1, 1);
@@ -55,6 +56,7 @@ if (svg == 1) {
 	hole_text(20, 1, 20, 14, 69, 0, 0);
 	hole_text(26, 2, 30, 28, 70, 0.5, -1.5);
 	hole_text(32, 2, 36, 110, 100, -0.5, -0.5);
+	}
 }
 else {
 	board();
