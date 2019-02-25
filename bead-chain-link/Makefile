@@ -1,7 +1,7 @@
-PROJECT = x-bumper
+PROJECT = bead-chain-link
 all: $(PROJECT).gco
 
-SETTINGS_PATH := $(HOME)/.Slic3r
+SETTINGS_PATH := /home/had/.Slic3r
 SETTINGS_CNAME := My Settings.ini
 SLICER_PARAMS := --load "$(SETTINGS_PATH)/filament/$(SETTINGS_CNAME)" --load "$(SETTINGS_PATH)/print/$(SETTINGS_CNAME)" --load "$(SETTINGS_PATH)/printer/$(SETTINGS_CNAME)"
 
