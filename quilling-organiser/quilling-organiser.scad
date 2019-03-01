@@ -19,7 +19,7 @@ bw = 240; // board width
 bl = 330; // board length
 bh = 0.6; // board depth
 
-wall_width  = 4;
+wall_width  = 2.5;
 wall_height = 15;
 end_fillet  = 0;
 wall_fillet = 2;
