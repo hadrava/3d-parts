@@ -60,4 +60,4 @@ my $min = int($time);
 $time -= $min;
 my $sec = int($time * 60);
 
-print "Print time: $hour.$min:$sec (without initial homing and extruder heat-up)\n";
+printf("Print time: %02d.%02d:%02d (without initial homing and extruder heat-up)\n", $hour, $min, $sec);
