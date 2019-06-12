@@ -1,0 +1,7 @@
+Coupling:
+	- Connects shafts of motor GM37-20 and coffee grinder
+		http://www.snailshop.cz/zastarale/659-gm37-20.html
+	- Three washers should be placed inside the holes. (I used hammer to stuff them in.)
+	- With my printer:
+		- Grinder side has correct dimensions
+		- Motor side hole is too small (6mm is not enough), should be little bit larger (maybe 6.4 in diameter?)
