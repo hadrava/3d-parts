@@ -2,8 +2,8 @@ $fn=64;
 
 part_mode = 0;
 
-c_width = 69;
-c_height = 97;
+c_width = 67.5;
+c_height = 95.5;
 c_depth = 30;
 c_wall1 = 1.25;
 c_wall2 = 1.25;
@@ -27,13 +27,14 @@ module rotate(angle) {           // built-in rotate is inaccurate for 90 degrees
 	]) children();
 }
 
-module side_catcher(width, depth, lock_size = 1.3) {
+module side_catcher(width, depth, lock_size = 4.3) {
 	z_off = -c_bottom;
 	box_height = 10;
+    lock_move = 3;
 	rotate([0,0,90]) {
 		translate([-width/2, 0, z_off])
 			cube([width, depth, box_height - z_off]);
-		translate([-width/2, 0 , -c_bottom*0.75])
+		translate([-width/2, 0 , -c_bottom*0.75-lock_move])
 			rotate([45, 0, 0])
 			cube([width, sqrt(2) * lock_size/2, sqrt(2) * lock_size/2]);
 	}
@@ -108,6 +109,7 @@ module top() {
 	}
 }
 
+
 if (part_mode == 0) {
 	bottom();
 	translate([0, 0, 100])
@@ -120,7 +122,16 @@ if (part_mode == 2) {
 	translate([100, 0, 0])
 		rotate([180, 0, 0])
 		top();
+}if (part_mode == 99) {
+    intersection() {
+    translate([-200, 0, -200])
+    cube([400,1,400]);
+        union() {
+	bottom();
+	translate([0, 0, 10])
+		top();
+        }
+    }
 }
 
 // vim: ft=c
-// oj

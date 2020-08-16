@@ -11,4 +11,4 @@ Parameters:
  - `top_clearance` - ammount of space taken away from the top part to ensure better fitting
 
 ## TODO
- - Lower both `c_width` and `c_height` by 1.5 mm
+ - inverse locking mechanism - it should be easy to close and difficult to open...
