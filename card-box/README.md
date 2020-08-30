@@ -10,5 +10,12 @@ Parameters:
  - `c_bottom` - thickness of bottom and top cover
  - `top_clearance` - ammount of space taken away from the top part to ensure better fitting
 
-## TODO
- - inverse locking mechanism - it should be easy to close and difficult to open...
+Variants:
+ - `part_mode`
+   - `0`: full box
+   - `1`: bottom part
+   - `2`: top part
+   - `99`: locking mechanism slice for debug
+ - `locking_mechanism_mode_version`
+   - `0`: easy to print, works ok-ish (recomended version)
+   - `1`: theoretically better, more difficult to print, untested

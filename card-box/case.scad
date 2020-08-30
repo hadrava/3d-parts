@@ -10,6 +10,8 @@ c_wall2 = 1.25;
 c_bottom = 2.5;
 top_clearance = 0.1;
 
+locking_mechanism_mode_version = 0;
+
 // Source: http://forum.openscad.org/not-valid-2-manifold-union-of-two-cubes-td21953.html
 module rotate(angle) {           // built-in rotate is inaccurate for 90 degrees, etc
 	a = len(angle) == undef ? [0, 0, angle] : angle;
@@ -28,6 +30,16 @@ module rotate(angle) {           // built-in rotate is inaccurate for 90 degrees
 }
 
 module side_catcher(width, depth, lock_size = 4.3) {
+	if (locking_mechanism_mode_version == 0) {
+		side_catcher_easy_print(width, depth, lock_size);
+	}
+	else if (locking_mechanism_mode_version == 1) {
+		side_catcher_theoretical(width, depth, lock_size);
+	}
+
+}
+
+module side_catcher_easy_print(width, depth, lock_size = 4.3) {
 	z_off = -c_bottom;
 	box_height = 10;
     lock_move = 3;
@@ -37,6 +49,28 @@ module side_catcher(width, depth, lock_size = 4.3) {
 		translate([-width/2, 0 , -c_bottom*0.75-lock_move])
 			rotate([45, 0, 0])
 			cube([width, sqrt(2) * lock_size/2, sqrt(2) * lock_size/2]);
+	}
+}
+
+module side_catcher_theoretical(width, depth, lock_size = 4.3) {
+	z_off = -c_bottom;
+	box_height = 10;
+    lock_move = 1.2;
+	rotate([0,0,90]) {
+		translate([-width/2, 0, z_off])
+			cube([width, depth, box_height - z_off]);
+        translate([-width/2, 0 , 0]) {
+            translate([0, 0 , -c_bottom*0.75-lock_move+c_bottom*0.95])
+                    rotate([45, 0, 0])
+                    cube([width, sqrt(2) * lock_size/2, sqrt(2) * lock_size/2]);
+            intersection () {
+                translate([0, 0 , -c_bottom*0.75-lock_move])
+                    rotate([45, 0, 0])
+                    cube([width, sqrt(2) * lock_size/2, sqrt(2) * lock_size/2]);
+                translate([0, -c_wall1, -c_bottom])
+                    cube([width, sqrt(2) * lock_size/2, c_bottom/2]);
+            }
+        }
 	}
 }
 
@@ -128,7 +162,7 @@ if (part_mode == 2) {
     cube([400,1,400]);
         union() {
 	bottom();
-	translate([0, 0, 10])
+	translate([0, 0, 2.6])
 		top();
         }
     }
