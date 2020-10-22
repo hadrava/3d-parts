@@ -1,17 +1,19 @@
 $fn=64;
 eps=0.001;
 
-part_mode = 1;
+part_mode = 0;
 //part_mode = 99;
+// normal sizes: 0, 1, 2, 3
+// zejména 1 a 2 doporučuji
+bar_mode = 1;
 
-bar_radius = 15;
-//bar_radius = 10;
-//bar_radius = 8;
+bar_radius = 15 - 1.5 * bar_mode;
+
 
 open_angle = 10;
 open_space = 1;
 
-bar_width = 20;
+bar_width = 15;
 
 bar_thickness = 2.5;
 bar_screwholder_height = 6;
@@ -20,8 +22,8 @@ bar_screwholder_corner_height = 12;
 
 
 m4_head_hole = 9;
-m4_nut_hole = 9;
-m4_hole = 4.8;
+m4_nut_hole = 7.6;
+m4_hole = 4.6;
 m4_min_material_height = 4;
 
 
@@ -45,7 +47,7 @@ multmatrix([
 bridge_support_height = 0.2;
 
 connector_count = 5;
-connector_radius = 8;
+connector_radius = 7.5;
 connector_in_radius = bar_radius-1;
 connector_pos = [-bar_radius - connector_radius - bar_thickness - 1,0,0];
 connector_screw_inset = 1.5;
@@ -53,9 +55,8 @@ connector_clearance = 0.1;
 
 module connector_bar(supports) {
 	h = bar_width / connector_count;
-
-	bridge_w = 2*connector_in_radius - 5.5;
-	bridge_l = -connector_pos[0] + connector_radius + 2;
+    bridge_w = bar_radius + 7.5;
+	bridge_l = -connector_pos[0] + connector_radius + 1;
 	if (supports) {
 		translate([-bridge_l-3+eps, -bridge_w/2, 0])
 			cube([3, bridge_w, bar_width]);
@@ -102,8 +103,9 @@ module connector_bar(supports) {
 	}
 }
 
+
+inset = 3*connector_radius-4;
 module connector_lamp() {
-	inset = 3*connector_radius;
 	difference() {
 		union() {
 			h = bar_width / connector_count;
@@ -189,6 +191,13 @@ module bar(supports=0) {
 				translate([0, -temp_y, -1])
 				cube([open_space, temp_y, bar_width+2]);
 		}
+        for (a = [-1:2:1]) {
+            rotate([0,0,a*open_angle/2])
+                translate([0,-bar_radius/2,0])
+                rotate([0,0,45])
+                translate([-bar_radius/2,-bar_radius/2,-1])
+                cube([bar_radius, bar_radius, bar_width+2]);
+        }
 	}
 }
 
