@@ -1,7 +1,7 @@
 $fn=64;
 eps=0.001;
 
-part_mode = 0;
+part_mode = 2;
 //part_mode = 99;
 // normal sizes: 0, 1, 2, 3
 // zejména 1 a 2 doporučuji
@@ -201,9 +201,100 @@ module bar(supports=0) {
 }
 
 
+light_diam = 22.2;
+light_l_diam = 23.5;
+light_height = 70;
+l_offset = 10;
+lamp_thickness = 2.5;
+strap_thickness = 7.5;
+strap_width = 35.5;
+strap_offset = 8;
+light_out_hole_offset = 39;
+
+module light_subtract(add=0) {
+	cylinder(r=light_diam/2, h=light_height);
+	special_offset = add * (- l_offset - strap_offset);
+	special_height = add * (l_offset +strap_offset);
+	translate([0,0,l_offset + special_offset]) {
+		cylinder(r=light_l_diam/2, h=light_height-l_offset + special_height);
+		translate([0, -light_l_diam/2, 0])
+			cube([light_l_diam/2 + lamp_thickness + strap_thickness, light_l_diam, light_height-l_offset + special_height]);
+	}
+	translate([light_l_diam/2 + lamp_thickness, -strap_width/2, -strap_offset])
+		cube([strap_thickness, strap_width, light_height + strap_offset]);
+}
+
+module lamp_drains() {
+	drain_height = strap_offset + lamp_thickness*2;
+	drain_hole_size = 3;
+	drain_anti_hole_size = 8;
+	difference () {
+		cylinder(r=light_diam/2, h=drain_height);
+		translate([0,0,-1]) {
+			cylinder(r=light_diam/2 - drain_hole_size, h=drain_height+2);
+			for (ang = [45: 90: 180]) {
+				rotate([0,0,ang])
+				translate([-light_diam, -drain_anti_hole_size/2])
+					cube([light_diam*2, drain_anti_hole_size, drain_height+2]);
+			}
+		}
+	}
+}
+
+lamp_magnet_nut_height = 3;
+module lamp_base() {
+	difference() {
+		minkowski() {
+			light_subtract(1);
+			//sphere(r=lamp_thickness);
+			translate([0,0,-lamp_thickness])
+				cylinder(r=lamp_thickness, h=lamp_thickness*2);
+		}
+		light_subtract(0);
+		sub_size = (light_l_diam + lamp_thickness + strap_thickness)*2;
+		// upper cut
+		translate([-sub_size/2, -sub_size/2, light_height - eps])
+			cube([sub_size, sub_size, strap_thickness * 3 + 2]);
+		// lower cut
+		translate([-sub_size/2, -sub_size/2, -strap_offset*4 +eps])
+			cube([sub_size, sub_size, strap_offset * 3 + 2]);
+
+		// light out cut in rounded part
+		hole_out_sub_size = (light_l_diam/2 + lamp_thickness)*2 + eps;
+		translate([-hole_out_sub_size/2 - lamp_thickness, -hole_out_sub_size/2, light_out_hole_offset])
+			cube([hole_out_sub_size, hole_out_sub_size, light_height]);
+
+		// magnet nut + screw hole
+		translate([0,0,-lamp_magnet_nut_height])
+			cylinder(r=m4_nut_hole/2, h=2*lamp_magnet_nut_height, $fn=6);
+		translate([0,0,-strap_offset-lamp_thickness-2])
+			cylinder(r=m4_hole/2, h=2*(strap_offset+lamp_thickness+4));
+
+		// holes for water drain
+		translate([0,0,-lamp_thickness - strap_offset])
+			lamp_drains();
+	}
+}
+
+
+module lamp_transform(forward=1) {
+	off = -inset/2 - light_diam/2 - lamp_thickness - strap_thickness - lamp_thickness;
+	if (forward) {
+		translate([off, -70/2, bar_width/2])
+			rotate([-90, 0, 0])
+			children();
+	}
+	else {
+		rotate([90, 0, 0])
+			translate([-off, +70/2, -bar_width/2])
+			children();
+	}
+}
 
 module lamp() {
 	connector_lamp();
+	lamp_transform()
+		lamp_base();
 }
 
 
@@ -215,7 +306,19 @@ if (part_mode == 1) {
 	bar(1);
 }
 if (part_mode == 2) {
-	lamp();
+	lamp_transform(0)
+		lamp();
+}
+if (part_mode == 3) {
+	lamp_base();
+	//light_subtract(0);
+}
+if (part_mode == 98) {
+	intersection() {
+		lamp();
+		translate([-100, -100, bar_width/2])
+			cube([200, 200, 3]);
+	}
 }
 if (part_mode == 99) {
 	intersection() {
