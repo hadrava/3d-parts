@@ -29,18 +29,18 @@ m4_min_material_height = 4;
 
 // Source: http://forum.openscad.org/not-valid-2-manifold-union-of-two-cubes-td21953.html
 module rotate(angle) {           // built-in rotate is inaccurate for 90 degrees, etc
-a = len(angle) == undef ? [0, 0, angle] : angle;
-cx = cos(a[0]);
-cy = cos(a[1]);
-cz = cos(a[2]);
-sx = sin(a[0]);
-sy = sin(a[1]);
-sz = sin(a[2]);
-multmatrix([
-		[ cy * cz, cz * sx * sy - cx * sz, cx * cz * sy + sx * sz, 0],
-		[ cy * sz, cx * cz + sx * sy * sz,-cz * sx + cx * sy * sz, 0],
-		[-sy,      cy * sx,                cx * cy,                0],
-		[ 0,       0,                      0,                      1]
+	a = len(angle) == undef ? [0, 0, angle] : angle;
+	cx = cos(a[0]);
+	cy = cos(a[1]);
+	cz = cos(a[2]);
+	sx = sin(a[0]);
+	sy = sin(a[1]);
+	sz = sin(a[2]);
+	multmatrix([
+			[ cy * cz, cz * sx * sy - cx * sz, cx * cz * sy + sx * sz, 0],
+			[ cy * sz, cx * cz + sx * sy * sz,-cz * sx + cx * sy * sz, 0],
+			[-sy,      cy * sx,                cx * cy,                0],
+			[ 0,       0,                      0,                      1]
 	]) children();
 }
 
@@ -55,7 +55,7 @@ connector_clearance = 0.1;
 
 module connector_bar(supports) {
 	h = bar_width / connector_count;
-    bridge_w = bar_radius + 7.5;
+	bridge_w = bar_radius + 7.5;
 	bridge_l = -connector_pos[0] + connector_radius + 1;
 	if (supports) {
 		translate([-bridge_l-3+eps, -bridge_w/2, 0])
@@ -115,10 +115,10 @@ module connector_lamp() {
 				translate([0,0,h * i + connector_clearance])
 					hull () {
 						cylinder(r=connector_radius, h=temp_h);
-					translate([-inset, -inset,0])
-						cylinder(r=connector_radius, h=temp_h);
-					translate([-inset, inset,0])
-						cylinder(r=connector_radius, h=temp_h);
+						translate([-inset, -inset,0])
+							cylinder(r=connector_radius, h=temp_h);
+						translate([-inset, inset,0])
+							cylinder(r=connector_radius, h=temp_h);
 					}
 			}
 		}
@@ -153,7 +153,6 @@ module bar_screw_base(hole_d, hole_fn) {
 				translate([0, 0, open_space + m4_min_material_height])
 					cylinder(r=hole_d/2, h=srew_hole_height, $fn=hole_fn);
 			}
-
 	}
 }
 
@@ -163,42 +162,42 @@ module bar_left() {
 
 module bar_right() {
 	translate([0, 0, bar_width])
-	rotate([0,180,0])
+		rotate([0,180,0])
 		bar_screw_base(m4_head_hole, $fn);
 }
 
 module bar(supports=0) {
 	translate(-connector_pos)
-	difference() {
-		union() {
-			cylinder(r=bar_radius+bar_thickness, h=bar_width);
-			rotate([0,0,-open_angle/2])
-				bar_left();
-			rotate([0,0,open_angle/2])
-				bar_right();
-			connector_bar(supports);
-		}
-		translate([0,0,-1])
-			cylinder(r=bar_radius, h=bar_width+2);
+		difference() {
+			union() {
+				cylinder(r=bar_radius+bar_thickness, h=bar_width);
+				rotate([0,0,-open_angle/2])
+					bar_left();
+				rotate([0,0,open_angle/2])
+					bar_right();
+				connector_bar(supports);
+			}
+			translate([0,0,-1])
+				cylinder(r=bar_radius, h=bar_width+2);
 
-		hull() {
-			temp_y = bar_radius + bar_thickness + bar_width/2 + bar_screwholder_distance;
+			hull() {
+				temp_y = bar_radius + bar_thickness + bar_width/2 + bar_screwholder_distance;
 
-			rotate([0,0,-open_angle/2])
-				translate([-open_space, -temp_y, -1])
-				cube([open_space, temp_y, bar_width+2]);
-			rotate([0,0,open_angle/2])
-				translate([0, -temp_y, -1])
-				cube([open_space, temp_y, bar_width+2]);
+				rotate([0,0,-open_angle/2])
+					translate([-open_space, -temp_y, -1])
+					cube([open_space, temp_y, bar_width+2]);
+				rotate([0,0,open_angle/2])
+					translate([0, -temp_y, -1])
+					cube([open_space, temp_y, bar_width+2]);
+			}
+			for (a = [-1:2:1]) {
+				rotate([0,0,a*open_angle/2])
+					translate([0,-bar_radius/2,0])
+					rotate([0,0,45])
+					translate([-bar_radius/2,-bar_radius/2,-1])
+					cube([bar_radius, bar_radius, bar_width+2]);
+			}
 		}
-        for (a = [-1:2:1]) {
-            rotate([0,0,a*open_angle/2])
-                translate([0,-bar_radius/2,0])
-                rotate([0,0,45])
-                translate([-bar_radius/2,-bar_radius/2,-1])
-                cube([bar_radius, bar_radius, bar_width+2]);
-        }
-	}
 }
 
 
@@ -206,9 +205,6 @@ module bar(supports=0) {
 module lamp() {
 	connector_lamp();
 }
-
-
-
 
 
 if (part_mode == 0) {
