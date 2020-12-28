@@ -2,6 +2,8 @@
 
 Currently it fits regular playing cards inside protective sleeves.
 
+![Render](render.png)
+
 Parameters:
 
  - `c_width` × `c_height` × `c_depth` - inner dimensions of the box

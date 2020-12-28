@@ -1,6 +1,6 @@
 $fn=64;
 
-part_mode = 0;
+part_mode = 3;
 
 c_width = 67.5;
 c_height = 95.5;
@@ -156,7 +156,14 @@ if (part_mode == 2) {
 	translate([100, 0, 0])
 		rotate([180, 0, 0])
 		top();
-}if (part_mode == 99) {
+}
+if (part_mode == 3) {
+    bottom();
+	translate([100, 0, 30])
+		rotate([180, 0, 0])
+		top();
+}
+if (part_mode == 99) {
     intersection() {
     translate([-200, 0, -200])
     cube([400,1,400]);

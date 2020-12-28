@@ -1,5 +1,5 @@
 PROJECT = case
-all: $(PROJECT)-bottom.gco $(PROJECT)-top.gco
+all: $(PROJECT)-bottom.stl $(PROJECT)-top.stl
 
 SETTINGS_PATH := /home/had/.Slic3r
 #SETTINGS_CNAME := My Settings.ini
